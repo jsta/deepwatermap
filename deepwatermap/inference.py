@@ -39,6 +39,15 @@ def main():
 
     # load and preprocess the input image
     image = tiff.imread(image_path)
+
+    # for planet data
+    # https://developers.planet.com/docs/apis/data/sensors/
+    image = np.rollaxis(np.rollaxis(image, -1), -1)
+    image_single = np.zeros((image.shape[0], image.shape[1]))
+    image_single[:] = np.NaN
+    image_single = image_single[:,:,np.newaxis]
+    image = np.concatenate((image, image_single, image_single), axis=2)
+    
     pad_r = find_padding(image.shape[0])
     pad_c = find_padding(image.shape[1])
     image = np.pad(image, ((pad_r[0], pad_r[1]), (pad_c[0], pad_c[1]), (0, 0)), 'reflect')
