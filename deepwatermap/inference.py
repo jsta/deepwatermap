@@ -8,6 +8,7 @@ $ python inference.py --checkpoint_path checkpoints/cp.135.ckpt --image_path sam
 # import os
 # os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
+import pdb
 import argparse
 from deepwatermap import deepwatermap
 import tifffile as tiff
@@ -40,8 +41,9 @@ def main():
     # load and preprocess the input image
     image = tiff.imread(image_path)
 
-    # for planet data
-    # https://developers.planet.com/docs/apis/data/sensors/
+    # deepwatermap expects a 6 layers sequence with `shape=(None, None, None, 6)`
+    # for planet data: https://developers.planet.com/docs/apis/data/sensors/
+    # pdb.set_trace()    
     image = np.rollaxis(np.rollaxis(image, -1), -1)
     image_single = np.zeros((image.shape[0], image.shape[1]))
     image_single[:] = np.NaN
