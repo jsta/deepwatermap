@@ -43,7 +43,11 @@ def main():
 
     # deepwatermap expects a 6 layers sequence with `shape=(None, None, None, 6)`
     # for planet data: https://developers.planet.com/docs/apis/data/sensors/
-    # pdb.set_trace()    
+    
+    # `image.shape` here should be (4, X, X)
+    if image.shape[2] == 4: # handle misordered bands in some planet imagery
+        image = np.rollaxis(image, -1)
+
     image = np.rollaxis(np.rollaxis(image, -1), -1)
     image_single = np.zeros((image.shape[0], image.shape[1]))
     image_single[:] = np.NaN
